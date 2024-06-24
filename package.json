@@ -1,0 +1,12 @@
+{
+  "name": "hihgload",
+  "description": "Yet another example of social network to discover how does it work inside.",
+  "version": "0.1.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "private": true,
+  "keywords": [],
+  "author": "pioneer4096",
+  "license": "ISC"
+}
