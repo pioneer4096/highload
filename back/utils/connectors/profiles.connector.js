@@ -4,23 +4,11 @@ class ProfilesConnector {
     }
 
     async getProfile(userId) {
-        const profile = await this.db.findProfileById(userId)
-        if (profile?.rows?.length) {
-            return profile.rows[0] || null
-        }
-        else {
-            return null
-        }
+        return this.db.findProfileById(userId)
     }
 
     async getAllProfiles() {
-        const profiles = await this.db.getAll()
-        if (profiles?.rows?.length) {
-            return profiles.rows
-        }
-        else {
-            return null
-        }
+        return this.db.getAll()
     }
 }
 

@@ -3,6 +3,7 @@ const express = require('express')
 const AuthConnector = require('./utils/connectors/auth.connector.js')
 const ProfilesConnector = require('./utils/connectors/profiles.connector.js')
 const DataBase = require('./utils/db/DataBase.js')
+const Errors = require('./utils/reference/Error.js')
 
 const app = express()
 const http = require('http').createServer(app)
@@ -26,9 +27,22 @@ app.post('/login', async (req, res) => {
         })
     }
     catch (e) {
-        res.status(500).send({
-            description: 'Broken query'
-        })
+        if (e.message === Errors.LOGIN_NOT_FOUND) {
+            return res.status(400).send({
+                description: 'Такой логин не найден'
+            })
+        }
+        else if (e.message === Errors.INVALID_LOGIN_PAIR) {
+            return res.status(400).send({
+                description: 'Неправильный логин/пароль'
+            })
+        }
+        else {
+            return res.status(500).send({
+                description: Errors.BROKEN_QUERY
+            })
+        }
+
     }
 })
 

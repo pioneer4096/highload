@@ -1,11 +1,11 @@
 const Pool = require('pg').Pool
 const {v4} = require('uuid');
-const config = require('../../config.js')
+const {dbConfig} = require('../../config.js')
 
 // HAND MADE ORM
 class DataBase {
     constructor() {
-        this.pool = new Pool(config)
+        this.pool = new Pool(dbConfig)
     }
 
     async register(first_name, second_name, birthdate, biography, city, password) {
@@ -15,16 +15,34 @@ class DataBase {
         return response.rows[0].user_id
     }
 
-    findAccount(login) {
-
+    async findProfileById(id) {
+        const profile = await this.pool.query('SELECT user_id, first_name, second_name, birthdate, biography, city FROM profiles where user_id = $1', [id])
+        if (profile?.rows?.length) {
+            return profile.rows[0]
+        }
+        else {
+            return null;
+        }
     }
 
-    async findProfileById(id) {
-        return this.pool.query('SELECT user_id, first_name, second_name, birthdate, biography, city FROM profiles where user_id = $1', [id])
+    async findProfileWithPasswordById(id) {
+        const profile = await this.pool.query('SELECT user_id, password FROM profiles where user_id = $1', [id])
+        if (profile?.rows?.length) {
+            return profile.rows[0]
+        }
+        else {
+            return null;
+        }
     }
 
     async getAll() {
-        return this.pool.query('SELECT user_id, first_name, second_name, birthdate, biography, city FROM profiles ORDER BY id ASC')
+        const profiles = this.pool.query('SELECT user_id, first_name, second_name, birthdate, biography, city FROM profiles ORDER BY id ASC')
+        if (profiles?.rows?.length) {
+            return profiles.rows
+        }
+        else {
+            return null;
+        }
     }
 
 
