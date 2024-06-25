@@ -1,6 +1,6 @@
 const md5 = require('md5')
 const jwt = require('jsonwebtoken')
-const {jwtSecret} = require('../../config.js')
+const {jwtSecret} = require('../../config/config.js')
 const Errors = require('../reference/Error.js')
 
 class AuthConnector {
@@ -23,7 +23,7 @@ class AuthConnector {
             }
         }
         else {
-            throw new Error(Errors.LOGIN_NOT_FOUND)
+            throw new Error(Errors.USER_ID_NOT_FOUND)
         }
     }
 

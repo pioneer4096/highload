@@ -3,7 +3,7 @@ const express = require('express')
 const AuthConnector = require('./utils/connectors/auth.connector.js')
 const ProfilesConnector = require('./utils/connectors/profiles.connector.js')
 const DataBase = require('./utils/db/DataBase.js')
-const Errors = require('./utils/reference/Error.js')
+const Errors = require('./utils/reference/Errors.js')
 
 const app = express()
 const http = require('http').createServer(app)
@@ -27,14 +27,9 @@ app.post('/login', async (req, res) => {
         })
     }
     catch (e) {
-        if (e.message === Errors.LOGIN_NOT_FOUND) {
+        if ([Errors.USER_ID_NOT_FOUND, Errors.INVALID_LOGIN_PAIR].includes(e.message)) {
             return res.status(400).send({
-                description: 'Такой логин не найден'
-            })
-        }
-        else if (e.message === Errors.INVALID_LOGIN_PAIR) {
-            return res.status(400).send({
-                description: 'Неправильный логин/пароль'
+                description: e.message
             })
         }
         else {
@@ -48,7 +43,6 @@ app.post('/login', async (req, res) => {
 
 app.post('/user/register', async (req, res) => {
     const {first_name, second_name, birthdate, biography, city, password} = req.body
-    console.log(req.body)
     const fields = [first_name, second_name, birthdate, biography, city, password]
     const fieldNames = ['first_name', 'second_name', 'birthdate', 'biography', 'city', 'password']
 
@@ -71,7 +65,7 @@ app.post('/user/register', async (req, res) => {
     catch (e) {
         console.error(e)
         res.status(500).send({
-            description: 'Broken query'
+            description: Errors.BROKEN_QUERY
         })
     }
 })
@@ -90,7 +84,7 @@ app.get('/user/get', async (req, res) => {
     }
     catch (e) {
         res.status(500).send({
-            description: 'Broken query'
+            description: Errors.BROKEN_QUERY
         })
     }
 
@@ -100,7 +94,7 @@ app.get('/user/get', async (req, res) => {
     }
     else {
         res.status(404).send({
-            description: 'User not found'
+            description: Errors.USER_NOT_FOUND
         })
     }
 })
@@ -115,7 +109,7 @@ app.get('/user/all', async (req, res) => {
     }
     catch (e) {
         res.status(500).send({
-            description: 'Broken query'
+            description: Errors.BROKEN_QUERY
         })
     }
 })

@@ -1,6 +1,6 @@
 const Pool = require('pg').Pool
 const {v4} = require('uuid');
-const {dbConfig} = require('../../config.js')
+const {dbConfig} = require('../../config/config.js')
 
 // HAND MADE ORM
 class DataBase {
