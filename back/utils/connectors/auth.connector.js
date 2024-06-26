@@ -1,7 +1,7 @@
 const md5 = require('md5')
 const jwt = require('jsonwebtoken')
 const {jwtSecret} = require('../../config/config.js')
-const Errors = require('../reference/Error.js')
+const Errors = require('../reference/Errors.js')
 
 class AuthConnector {
     constructor(db) {
