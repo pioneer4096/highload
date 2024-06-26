@@ -28,7 +28,8 @@ class AuthConnector {
     }
 
     generateToken(user_id) {
-        return jwt.sign({ user_id }, jwtSecret)
+        const expired = Date.now() + 4 * 60 * 60 * 1000
+        return jwt.sign({ user_id, expired }, jwtSecret)
     }
 }
 
