@@ -114,6 +114,30 @@ app.get('/user/all', async (req, res) => {
     }
 })
 
+app.get('/user/search', async (req, res) => {
+    const firstName = req.query.firstName || ''
+    const lastName = req.query.lastName || ''
+
+    if (!firstName || !lastName) {
+        return res.status(400).send({
+            description: 'Не задано одно из обязательных полей: имя или фамилия'
+        })
+    }
+
+    try {
+        const profiles = await profilesConnector.searchProfiles(firstName, lastName)
+        return res.status(200).json({
+            items: profiles
+        })
+    }
+    catch (e) {
+        res.status(500).send({
+            description: Errors.BROKEN_QUERY
+        })
+    }
+
+})
+
 
 
 http.listen(port, () => {
