@@ -139,7 +139,6 @@ app.get('/user/search', async (req, res) => {
 })
 
 
-
 http.listen(port, () => {
     console.log(`App started at port ${port}`)
 })
