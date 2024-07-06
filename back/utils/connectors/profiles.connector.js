@@ -10,6 +10,10 @@ class ProfilesConnector {
     async getAllProfiles() {
         return this.db.getAll()
     }
+
+    async searchProfiles(firstName, lastName) {
+        return this.db.searchProfiles(firstName, lastName)
+    }
 }
 
 module.exports = ProfilesConnector

@@ -36,7 +36,19 @@ class DataBase {
     }
 
     async getAll() {
-        const profiles = this.pool.query('SELECT user_id, first_name, second_name, birthdate, biography, city FROM profiles ORDER BY id ASC')
+        const profiles = await this.pool.query('SELECT user_id, first_name, second_name, birthdate, biography, city FROM profiles ORDER BY id ASC')
+        if (profiles?.rows?.length) {
+            return profiles.rows
+        }
+        else {
+            return null;
+        }
+    }
+
+    async searchProfiles(firstName, lastName) {
+        const first_name = firstName + '%'
+        const last_name = lastName + '%'
+        const profiles = await this.pool.query("SELECT user_id, first_name, second_name, birthdate, biography, city FROM profiles WHERE first_name like $1 and second_name like $2 ORDER BY id ASC LIMIT 30", [first_name, last_name])
         if (profiles?.rows?.length) {
             return profiles.rows
         }
